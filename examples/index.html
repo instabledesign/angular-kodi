@@ -51,7 +51,7 @@
 
                         kodiServeur.VideoLibrary.GetMovies().then(
                             function (movies) {
-                                console.log('youpi', movies);
+                                console.log(movies);
                             },
                             function () {
 
@@ -61,7 +61,7 @@
                             }
                         );
 
-//  @ TODO test cache request
+//                        TODO test cache request
 //                        setTimeout(function(){
 //                            kodi.VideoLibrary.GetMovies(null, {'hydrate': false}).then(
 //                                function (movies) {
@@ -82,7 +82,7 @@
 </head>
 <body>
 <div data-ng-app="myApp">
-    <div data-ng-controller="MyCtrl">Open the console to show the magic</div>
+    <div data-ng-controller="MyCtrl">Open the console and refresh page to show the magic</div>
 </div>
 </body>
 </html>
