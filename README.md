@@ -1,4 +1,4 @@
-# Angular KODI
+# Angular KODI Work in progress
 
 An angular library for kodi
 
