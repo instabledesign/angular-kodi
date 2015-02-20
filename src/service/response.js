@@ -10,39 +10,18 @@ angular.module('kodi')
  *
  * Provide response service method
  */
-    .service('kodiResponseService', ['$q', 'md5', 'kodiResponse', 'kodiRequestCache', 'kodiServeurService', 'kodiAlbumService', 'kodiArtistService', 'kodiEpisodeService', 'kodiGenreService', 'kodiMovieService', 'kodiPlayerService', 'kodiSeasonService', 'kodiSongService', 'kodiTvShowService',
-        function ($q, md5, kodiResponse, kodiRequestCache, kodiServeurService, kodiAlbumService, kodiArtistService, kodiEpisodeService, kodiGenreService, kodiMovieService, kodiPlayerService, kodiSeasonService, kodiSongService, kodiTvShowService) {
+    .service('kodiResponseService', ['$q', 'md5', 'kodiResponse', 'kodiServeurService', 'kodiAlbumService', 'kodiArtistService', 'kodiEpisodeService', 'kodiGenreService', 'kodiMovieService', 'kodiPlayerService', 'kodiSeasonService', 'kodiSongService', 'kodiTvShowService',
+        function ($q, md5, kodiResponse, kodiServeurService, kodiAlbumService, kodiArtistService, kodiEpisodeService, kodiGenreService, kodiMovieService, kodiPlayerService, kodiSeasonService, kodiSongService, kodiTvShowService) {
 
             var _this = this;
 
-            var getRequestById = function(response) {
-                var request = kodiRequestCache.byId.get(response.id);
-
-                if (!request) throw 'No request was found for response id "' + response.id + '"';
-
-                return request;
-            };
-
             _this.create = function (attributes) {
-                return new kodiResponse(attributes);
-            };
-
-            /**
-             * Handle response
-             * @param response
-             */
-            _this.handle = function (response) {
-                if (!response instanceof kodiResponse) throw 'Invalid argument. "kodiResponse" expected';
-
-                var request = getRequestById(response);
-
-                request.defer.notify('Get response');
+                var response = new kodiResponse(attributes);
 
                 var objectService = _this.guess(response);
+                response.data = objectService.hydrateFormResponse(response);
 
-                var responseObject = objectService.hydrateFormResponse(response);
-
-                request.success(responseObject);
+                return response;
             };
 
             /**

@@ -16,7 +16,7 @@ angular.module('kodi')
         function($cacheFactory) {
             return {
                 byId: $cacheFactory('kodiRequestByIdCache'),
-                byMd5: $cacheFactory('kodiRequestByMd5Cache')
+                byHash: $cacheFactory('kodiRequestByHashCache')
             };
         }
     ]);

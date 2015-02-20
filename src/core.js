@@ -88,7 +88,7 @@ angular.module('kodi', ['websocket', 'angular-md5'])
                 var message = JSON.parse(data);
 
                 if (message.hasOwnProperty('id')) {
-                    kodiResponseService.handle(
+                    kodiRequestService.resolveWith(
                         kodiResponseService.create(message)
                     );
                 }

@@ -13,6 +13,7 @@
     <script type="text/javascript" src="../src/cache/request.js"></script>
     <script type="text/javascript" src="../src/transport/connexion.js"></script>
     <script type="text/javascript" src="../src/model/serveur.js"></script>
+    <script type="text/javascript" src="../src/model/serveur-schema.js"></script>
     <script type="text/javascript" src="../src/model/request.js"></script>
     <script type="text/javascript" src="../src/model/response.js"></script>
     <!--<script type="text/javascript" src="../src/entity/album.js"></script>-->
@@ -49,7 +50,8 @@
 
                         console.info(kodiServeur);
 
-                        kodiServeur.VideoLibrary.GetMovies().then(
+                        // TODO simplify the properties access with getter
+                        kodiServeur.VideoLibrary.GetMovies({properties:kodiServeur.schema.types['Video.Fields.Movie'].items.enums}).then(
                             function (movies) {
                                 console.log(movies);
                             },

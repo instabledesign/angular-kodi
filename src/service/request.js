@@ -10,8 +10,8 @@ angular.module('kodi')
  *
  * Provide request service method
  */
-    .service('kodiRequestService', ['$q', 'md5', 'kodiRequest', 'kodiRequestValidator', 'kodiRequestCache', '$kodiRequestQueue', 'kodiConnexionService',
-        function ($q, md5, kodiRequest, kodiRequestValidator, kodiRequestCache, $kodiRequestQueue, kodiConnexionService) {
+    .service('kodiRequestService', ['$q', 'kodiRequest', 'kodiRequestValidator', 'kodiRequestCache', '$kodiRequestQueue', 'kodiConnexionService',
+        function ($q, kodiRequest, kodiRequestValidator, kodiRequestCache, $kodiRequestQueue, kodiConnexionService) {
 
             var _this = this;
             var requestId = 1;
@@ -38,6 +38,13 @@ angular.module('kodi')
                 }, 0);
 
                 return request.defer.promise;
+            };
+
+            _this.resolveWith = function (response) {
+                var request = kodiRequestCache.byId.get(response.id);
+                if (!request) throw 'No request was found for response id "' + response.id + '"';
+
+                request.success(response);
             };
 
             _this.addStateMachine = function (request) {
@@ -98,12 +105,11 @@ angular.module('kodi')
                          */
                         onbeforecreate           : function () {
                             this.history = [];
-                            this.md5 = md5.createHash(JSON.stringify([this.method, this.params]));
 
                             kodiRequestCache.byId.put(this.id, this);
-                            kodiRequestCache.byMd5.put(this.md5, this);
-                            //if (this.getOption('cache') == true && kodiCache.has(this.md5)) {
-                            //    var cachedRequest = kodiCache.get(this.md5);
+                            kodiRequestCache.byHash.put(this.hash, this);
+                            //if (this.getOption('cache') == true && kodiCache.has(this.hash)) {
+                            //    var cachedRequest = kodiCache.get(this.hash);
                             //
                             //    if (cachedRequest != null) {
                             //        switch (cachedRequest.current) {
@@ -151,8 +157,9 @@ angular.module('kodi')
                         onprocess          : function () {
                             kodiConnexionService.send(this.toJson());
                         },
-                        onsuccess          : function (event, from, to, data) {
-                            this.defer.resolve(data);
+                        onsuccess          : function (event, from, to, response) {
+                            this.response = response;
+                            this.defer.resolve(response.data);
                         },
                         onfail : function(event, from, to, data) {
                             this.defer.reject(data);
