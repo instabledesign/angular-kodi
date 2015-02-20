@@ -53,14 +53,12 @@ angular.module('kodi', ['websocket', 'angular-md5'])
              * @return $q.defer.promise
              */
             _this.request = function (method, params, options) {
-                return kodiRequestService.handle(
-                    kodiRequestService.create(
-                        {
-                            method: method,
-                            params: params
-                        },
-                        options
-                    )
+                return kodiRequestService.createAndHandle(
+                    {
+                        method: method,
+                        params: params
+                    },
+                    options
                 );
             };
 

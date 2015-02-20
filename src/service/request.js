@@ -40,6 +40,12 @@ angular.module('kodi')
                 return request.defer.promise;
             };
 
+            _this.createAndHandle = function (attributes, options) {
+                return _this.handle(
+                    _this.create(attributes, options)
+                )
+            };
+
             _this.resolveWith = function (response) {
                 var request = kodiRequestCache.byId.get(response.id);
                 if (!request) throw 'No request was found for response id "' + response.id + '"';
