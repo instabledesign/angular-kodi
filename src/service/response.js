@@ -10,11 +10,17 @@ angular.module('kodi')
  *
  * Provide response service method
  */
-    .service('kodiResponseService', ['$q', 'md5', 'kodiResponse', 'kodiServerService', 'kodiAlbumService', 'kodiArtistService', 'kodiEpisodeService', 'kodiGenreService', 'kodiMovieService', 'kodiPlayerService', 'kodiSeasonService', 'kodiSongService', 'kodiTvShowService',
-        function ($q, md5, kodiResponse, kodiServerService, kodiAlbumService, kodiArtistService, kodiEpisodeService, kodiGenreService, kodiMovieService, kodiPlayerService, kodiSeasonService, kodiSongService, kodiTvShowService) {
+    .service('kodiResponseService', ['kodiResponse', 'kodiServerService', 'kodiAlbumService', 'kodiArtistService', 'kodiEpisodeService', 'kodiGenreService', 'kodiMovieService', 'kodiPlayerService', 'kodiSeasonService', 'kodiSongService', 'kodiTvShowService',
+        function (kodiResponse, kodiServerService, kodiAlbumService, kodiArtistService, kodiEpisodeService, kodiGenreService, kodiMovieService, kodiPlayerService, kodiSeasonService, kodiSongService, kodiTvShowService) {
 
             var _this = this;
 
+            /**
+             * Create and hydrate a kodiResponse
+             *
+             * @param attributes
+             * @returns kodiResponse
+             */
             _this.create = function (attributes) {
                 var response = new kodiResponse(attributes);
 
@@ -29,7 +35,7 @@ angular.module('kodi')
              *
              * @param response
              *
-             * @returns {*}
+             * @returns Object
              */
             _this.guess = function (response) {
                 if (!response instanceof kodiResponse) throw 'Invalid argument. "kodiResponse" expected';

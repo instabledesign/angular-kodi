@@ -20,12 +20,19 @@ angular.module('kodi')
             _this.onMessage = null;
             _this.onError = null;
 
+            /**
+             * Send transport data
+             *
+             * @param data
+             */
             _this.send = function (data) {
                 $rootScope.$emit('kodi.send', data);
                 $websocket.send(data);
             };
 
-            // When the websocket is connected
+            /**
+             * When the websocket is connected
+             */
             $rootScope.$on('websocket.open', function (event, originalEvent) {
                 $rootScope.$emit('kodi.open', originalEvent);
                 if (angular.isFunction(_this.onOpen)) {
@@ -33,7 +40,9 @@ angular.module('kodi')
                 }
             });
 
-            // When the websocket close
+            /**
+             * When the websocket close
+             */
             $rootScope.$on('websocket.close', function (event, originalEvent) {
                 $rootScope.$emit('kodi.close', originalEvent);
                 if (angular.isFunction(_this.onClose)) {
@@ -41,7 +50,9 @@ angular.module('kodi')
                 }
             });
 
-            // When the websocket get a message
+            /**
+             * When the websocket get a message
+             */
             $rootScope.$on('websocket.message', function (event, originalEvent) {
                 if (!originalEvent.hasOwnProperty('data')) {
                     throw 'No data field found';
@@ -53,7 +64,9 @@ angular.module('kodi')
                 }
             });
 
-            // When the websocket get an error
+            /**
+             * When the websocket get an error
+             */
             $rootScope.$on('websocket.error', function (event, originalEvent) {
                 $rootScope.$emit('kodi.error', originalEvent);
                 if (angular.isFunction(_this.onError)) {

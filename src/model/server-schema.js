@@ -122,6 +122,10 @@ angular.module('kodi')
                         delete type.extends;
                     }
                 };
+
+                /**
+                 * Resolve schemaType
+                 */
                 for (var typeName in schemaTypes) {
                     if (!_this.types.hasOwnProperty(typeName)) {
                         resolveType(typeName);
