@@ -6,15 +6,15 @@
  */
 angular.module('kodi')
 /**
- * Angular kodiServeurSchema factory
+ * Angular kodiServerSchema factory
  *
- * provide kodiServeurSchema model
+ * provide kodiServerSchema model
  */
-    .factory('kodiServeurSchema', [
+    .factory('kodiServerSchema', [
         function () {
 
-            function kodiServeurSchema(schema) {
-                if (!(this instanceof kodiServeurSchema)) throw 'You must instanciate with "new" operator';
+            function kodiServerSchema(schema) {
+                if (!(this instanceof kodiServerSchema)) throw 'You must instanciate with "new" operator';
                 if (
                     !schema.methods ||
                     !schema.notifications ||
@@ -131,6 +131,6 @@ angular.module('kodi')
                 return _this;
             }
 
-            return kodiServeurSchema;
+            return kodiServerSchema;
         }
     ]);

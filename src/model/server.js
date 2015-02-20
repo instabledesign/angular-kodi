@@ -6,18 +6,18 @@
  */
 angular.module('kodi')
 /**
- * Angular kodiServeur factory
+ * Angular kodiServer factory
  *
- * provide kodiServeur model
+ * provide kodiServer model
  *
  * @require kodiRequestService Request service
  */
-    .factory('kodiServeur', ['kodiServeurSchema', 'kodiRequestService',
-        function (kodiServeurSchema, kodiRequestService) {
+    .factory('kodiServer', ['kodiServerSchema', 'kodiRequestService',
+        function (kodiServerSchema, kodiRequestService) {
 
-            function kodiServeur(schema) {
-                if (!(this instanceof kodiServeur)) throw 'You must instanciate with "new" operator';
-                if (!schema instanceof kodiServeurSchema) throw 'Schema must be a "kodiServeurSchema"';
+            function kodiServer(schema) {
+                if (!(this instanceof kodiServer)) throw 'You must instanciate with "new" operator';
+                if (!schema instanceof kodiServerSchema) throw 'Schema must be a "kodiServerSchema"';
 
                 var _this = this;
 
@@ -73,6 +73,6 @@ angular.module('kodi')
                 return _this;
             }
 
-            return kodiServeur;
+            return kodiServer;
         }
     ]);

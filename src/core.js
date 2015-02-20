@@ -25,21 +25,21 @@ angular.module('kodi', ['websocket', 'angular-md5'])
             var _this = this;
 
             _this.isReady = false;
-            _this.kodiServeur = {};
+            _this.kodiServer = {};
 
             /**
              * When the introspect request was done
              *
-             * @param callback Provide a kodiServeur object
+             * @param callback Provide a kodiServer object
              */
             _this.onReady = function (callback) {
                 if (!_this.isReady) {
                     $rootScope.$on('kodi.ready', function(){
-                        callback.call(null, _this.kodiServeur);
+                        callback.call(null, _this.kodiServer);
                     });
                 }
                 else {
-                    callback.call(null, _this.kodiServeur);
+                    callback.call(null, _this.kodiServer);
                 }
             };
 
@@ -63,15 +63,15 @@ angular.module('kodi', ['websocket', 'angular-md5'])
             };
 
             /**
-             * Get kodiServeur from the JSONRPC.Introspect result
-             * and trigger event "kodi.ready" with a kodiServeur object
+             * Listen when transport was ready and request "JSONRPC.Introspect"
+             * in order to create and hydrate a kodiServer and emit a "kodi.ready" event
              */
             $rootScope.$on('kodi.open', function () {
                 _this.request('JSONRPC.Introspect', null, {'validate': false, 'hydrate': false}).then(
-                    function (kodiServeur) {
-                        _this.kodiServeur = kodiServeur;
+                    function (kodiServer) {
+                        _this.kodiServer = kodiServer;
                         _this.isReady = true;
-                        $rootScope.$emit('kodi.ready', _this.kodiServeur);
+                        $rootScope.$emit('kodi.ready', _this.kodiServer);
                     },
                     function(){
                         console.error('FATAL ERROR');
@@ -80,7 +80,7 @@ angular.module('kodi', ['websocket', 'angular-md5'])
             });
 
             /**
-             * Handle and handle kodi response/notification
+             * Listen when transport get a message and dispatch to response or notification handler
              */
             $rootScope.$on('kodi.message', function (event, data) {
                 var message = JSON.parse(data);

@@ -10,8 +10,8 @@ angular.module('kodi')
  *
  * Provide response service method
  */
-    .service('kodiResponseService', ['$q', 'md5', 'kodiResponse', 'kodiServeurService', 'kodiAlbumService', 'kodiArtistService', 'kodiEpisodeService', 'kodiGenreService', 'kodiMovieService', 'kodiPlayerService', 'kodiSeasonService', 'kodiSongService', 'kodiTvShowService',
-        function ($q, md5, kodiResponse, kodiServeurService, kodiAlbumService, kodiArtistService, kodiEpisodeService, kodiGenreService, kodiMovieService, kodiPlayerService, kodiSeasonService, kodiSongService, kodiTvShowService) {
+    .service('kodiResponseService', ['$q', 'md5', 'kodiResponse', 'kodiServerService', 'kodiAlbumService', 'kodiArtistService', 'kodiEpisodeService', 'kodiGenreService', 'kodiMovieService', 'kodiPlayerService', 'kodiSeasonService', 'kodiSongService', 'kodiTvShowService',
+        function ($q, md5, kodiResponse, kodiServerService, kodiAlbumService, kodiArtistService, kodiEpisodeService, kodiGenreService, kodiMovieService, kodiPlayerService, kodiSeasonService, kodiSongService, kodiTvShowService) {
 
             var _this = this;
 
@@ -38,7 +38,7 @@ angular.module('kodi')
                     case response.result.hasOwnProperty('methods'):
                     case response.result.hasOwnProperty('notifications'):
                     case response.result.hasOwnProperty('types'):
-                        return kodiServeurService;
+                        return kodiServerService;
                         break;
 
                     case response.result.hasOwnProperty('player'):

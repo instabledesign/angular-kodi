@@ -6,17 +6,17 @@
  */
 angular.module('kodi')
 /**
- * Angular kodiServeurService
+ * Angular kodiServerService
  *
- * Provide serveur service method
+ * Provide server service method
  */
-    .service('kodiServeurService', ['kodiServeur', 'kodiServeurSchema',
-        function (kodiServeur, kodiServeurSchema) {
+    .service('kodiServerService', ['kodiServer', 'kodiServerSchema',
+        function (kodiServer, kodiServerSchema) {
             var _this = this;
 
             _this.hydrateFormResponse = function (response) {
-                return new kodiServeur(
-                    new kodiServeurSchema(response.result)
+                return new kodiServer(
+                    new kodiServerSchema(response.result)
                 );
             };
 

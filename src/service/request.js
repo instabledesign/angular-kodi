@@ -16,6 +16,14 @@ angular.module('kodi')
             var _this = this;
             var requestId = 1;
 
+            /**
+             * Create and initialize request
+             *
+             * @param attributes
+             * @param options
+             *
+             * @returns kodiRequest
+             */
             _this.create = function (attributes, options) {
                 var request = new kodiRequest(requestId++, attributes, options);
 
@@ -27,6 +35,13 @@ angular.module('kodi')
                 return request;
             };
 
+            /**
+             * Handle a kodiRequest
+             *
+             * @param request
+             *
+             * @returns promise
+             */
             _this.handle = function (request) {
                 if (!request instanceof kodiRequest) throw 'Invalid argument. "kodiRequest" expected';
 
@@ -40,12 +55,25 @@ angular.module('kodi')
                 return request.defer.promise;
             };
 
+            /**
+             * Create and handle request shortcut
+             *
+             * @param attributes
+             * @param options
+             *
+             * @returns promise
+             */
             _this.createAndHandle = function (attributes, options) {
                 return _this.handle(
                     _this.create(attributes, options)
                 )
             };
 
+            /**
+             * Resolve request with a response
+             *
+             * @param response
+             */
             _this.resolveWith = function (response) {
                 var request = kodiRequestCache.byId.get(response.id);
                 if (!request) throw 'No request was found for response id "' + response.id + '"';
@@ -53,6 +81,11 @@ angular.module('kodi')
                 request.success(response);
             };
 
+            /**
+             * Kodi request state machine
+             *
+             * @param request
+             */
             _this.addStateMachine = function (request) {
                 if (!request instanceof kodiRequest) throw 'Invalid argument. "kodiRequest" expected';
 
@@ -112,6 +145,7 @@ angular.module('kodi')
                         onbeforecreate           : function () {
                             this.history = [];
 
+                            // TODO better cache manage
                             kodiRequestCache.byId.put(this.id, this);
                             kodiRequestCache.byHash.put(this.hash, this);
                             //if (this.getOption('cache') == true && kodiCache.has(this.hash)) {

@@ -12,8 +12,8 @@
     <script type="text/javascript" src="../src/validator/request.js"></script>
     <script type="text/javascript" src="../src/cache/request.js"></script>
     <script type="text/javascript" src="../src/transport/connexion.js"></script>
-    <script type="text/javascript" src="../src/model/serveur.js"></script>
-    <script type="text/javascript" src="../src/model/serveur-schema.js"></script>
+    <script type="text/javascript" src="../src/model/server.js"></script>
+    <script type="text/javascript" src="../src/model/server-schema.js"></script>
     <script type="text/javascript" src="../src/model/request.js"></script>
     <script type="text/javascript" src="../src/model/response.js"></script>
     <!--<script type="text/javascript" src="../src/entity/album.js"></script>-->
@@ -25,7 +25,7 @@
     <!--<script type="text/javascript" src="../src/entity/season.js"></script>-->
     <!--<script type="text/javascript" src="../src/entity/song.js"></script>-->
     <!--<script type="text/javascript" src="../src/entity/tvshow.js"></script>-->
-    <script type="text/javascript" src="../src/service/serveur.js"></script>
+    <script type="text/javascript" src="../src/service/server.js"></script>
     <script type="text/javascript" src="../src/service/request.js"></script>
     <script type="text/javascript" src="../src/service/response.js"></script>
     <script type="text/javascript" src="../src/service/album.js"></script>
@@ -46,12 +46,12 @@
                     }
                 ])
                 .controller('MyCtrl', function (kodiCore) {
-                    kodiCore.onReady(function (kodiServeur) {
+                    kodiCore.onReady(function (kodiServer) {
 
-                        console.info(kodiServeur);
+                        console.info(kodiServer);
 
                         // TODO simplify the properties access with getter
-                        kodiServeur.VideoLibrary.GetMovies({properties:kodiServeur.schema.types['Video.Fields.Movie'].items.enums}).then(
+                        kodiServer.VideoLibrary.GetMovies({properties:kodiServer.schema.types['Video.Fields.Movie'].items.enums}).then(
                             function (movies) {
                                 console.log(movies);
                             },
