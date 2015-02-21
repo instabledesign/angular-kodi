@@ -10,11 +10,11 @@ angular.module('kodi')
  *
  * provide kodiTvShow entity
  */
-    .factory('kodiTvshow', [
+    .factory('kodiTvShow', [
         function () {
 
-            function kodiTvshow() {
-                if (!(this instanceof kodiTvshow)) throw 'You must instanciate with "new" operator';
+            function kodiTvShow() {
+                if (!(this instanceof kodiTvShow)) throw 'You must instanciate with "new" operator';
 
                 var _this = this;
 
@@ -26,6 +26,6 @@ angular.module('kodi')
                 return _this;
             }
 
-            return kodiTvshow;
+            return kodiTvShow;
         }
     ]);
