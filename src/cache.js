@@ -11,7 +11,7 @@ angular.module('kodi')
  * provide a cache
  */
     .service('kodiCache', ['kodiLoki',
-        function(kodiLoki) {
+        function (kodiLoki) {
             var _this = this;
 
             _this.db = new kodiLoki('kodi');

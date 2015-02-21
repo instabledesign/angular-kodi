@@ -16,9 +16,7 @@ angular.module('kodi')
             function kodiServerSchema(schema) {
                 if (!(this instanceof kodiServerSchema)) throw 'You must instanciate with "new" operator';
                 if (
-                    !schema.methods ||
-                    !schema.notifications ||
-                    !schema.types
+                    !schema.methods || !schema.notifications || !schema.types
                 ) {
                     throw 'Invalid schema';
                 }
@@ -56,9 +54,9 @@ angular.module('kodi')
                  *
                  * @returns Object
                  */
-                var resolveType = function(typeName, ancestorType) {
+                var resolveType = function (typeName, ancestorType) {
                     if (_this.types.hasOwnProperty(typeName)) return _this.types[typeName];
-                    if (!schemaTypes.hasOwnProperty(typeName)) throw 'Type "' +  typeName + '" not found in schema.types';
+                    if (!schemaTypes.hasOwnProperty(typeName)) throw 'Type "' + typeName + '" not found in schema.types';
 
                     // Prevent circular references
                     if (ancestorType == undefined) ancestorType = {};
@@ -88,13 +86,12 @@ angular.module('kodi')
                  * @returns Object
                  */
                 var resolveRef = function (object, typeName, ancestorType) {
-                    for(var key in object) {
+                    for (var key in object) {
                         if (typeof object[key] == 'object' && object[key] !== null) {
                             resolveRef(object[key], typeName, ancestorType);
                         }
 
-                        if (key == '$ref')
-                        {
+                        if (key == '$ref') {
                             extend(object, resolveType(object[key], ancestorType));
                             delete object[key];
                         }
@@ -106,17 +103,17 @@ angular.module('kodi')
                  *
                  * @param type
                  */
-                var resolveExtend = function(type) {
+                var resolveExtend = function (type) {
                     if (type.hasOwnProperty('extends')) {
                         var parentTypes = type.extends;
                         if (typeof parentTypes == 'object') {
-                            for(var typeName in parentTypes) {
-                                if (!schema.types.hasOwnProperty(parentTypes[typeName])) throw 'Type "' +  parentTypes[typeName] + '" not found in schema.types';
+                            for (var typeName in parentTypes) {
+                                if (!schema.types.hasOwnProperty(parentTypes[typeName])) throw 'Type "' + parentTypes[typeName] + '" not found in schema.types';
                                 extend(type, parentTypes[typeName]);
                             }
                         }
                         else {
-                            if (!schema.types.hasOwnProperty(parentTypes)) throw 'Type "' +  parentTypes + '" not found in schema.types';
+                            if (!schema.types.hasOwnProperty(parentTypes)) throw 'Type "' + parentTypes + '" not found in schema.types';
                             extend(type, schema.types[parentTypes]);
                         }
                         delete type.extends;

@@ -34,7 +34,7 @@ angular.module('kodi')
 
                     if (_this[methodFrag[0]].hasOwnProperty(methodFrag[1])) throw '"' + method + '" already exist.';
 
-                    _this[methodFrag[0]][methodFrag[1]] = (function (method){
+                    _this[methodFrag[0]][methodFrag[1]] = (function (method) {
                         return function (params, options) {
                             return kodiRequestService.handle(
                                 kodiRequestService.create(

@@ -90,51 +90,51 @@ angular.module('kodi')
                 if (!request instanceof kodiRequest) throw 'Invalid argument. "kodiRequest" expected';
 
                 StateMachine.create({
-                    target   : request,
-                    events   : [
+                    target:    request,
+                    events:    [
                         {
                             name: 'create',
                             from: 'none',
-                            to  : 'created'
+                            to:   'created'
                         },
                         {
                             name: 'validate',
                             from: 'created',
-                            to  : 'validated'
+                            to:   'validated'
                         },
                         {
                             name: 'pendingProcessing',
                             from: ['created', 'validated'],
-                            to  : 'pendingProcess'
+                            to:   'pendingProcess'
                         },
                         {
                             name: 'process',
                             from: 'pendingProcess',
-                            to  : 'inProcess'
+                            to:   'inProcess'
                         },
                         {
                             name: 'success',
                             from: 'inProcess',
-                            to  : 'processed'
+                            to:   'processed'
                         },
                         {
                             name: 'fail',
                             from: ['create', 'inProcess'],
-                            to  : 'failed'
+                            to:   'failed'
                         }
                     ],
                     callbacks: {
                         /*
                          * Global statemachine handlers
                          */
-                        onbeforeevent      : function (event, from, to, message) {
+                        onbeforeevent:             function (event, from, to, message) {
                             this.defer.notify(event);
                         },
-                        onafterevent       : function (event, from, to, message) {
+                        onafterevent:              function (event, from, to, message) {
                             this[event + 'At'] = new Date().getTime();
                             this.defer.notify(this.current);
                         },
-                        error              : function (event, from, to, args, errorCode, errorMessage) {
+                        error:                     function (event, from, to, args, errorCode, errorMessage) {
                             if (this.defer) {
                                 this.defer.reject(event);
                             }
@@ -142,7 +142,7 @@ angular.module('kodi')
                         /*
                          * Event statemachine handlers
                          */
-                        onbeforecreate           : function () {
+                        onbeforecreate:            function () {
                             this.history = [];
 
                             // TODO better cache manage
@@ -165,14 +165,14 @@ angular.module('kodi')
 
                             this.defer = $q.defer();
                         },
-                        onbeforevalidate : function () {
+                        onbeforevalidate:          function () {
                             if (this.getOption('validate') == false) {
                                 this.defer.notify('Validation skipped by option');
 
                                 return false;
                             }
                         },
-                        onvalidate         : function (event) {
+                        onvalidate:                function (event) {
                             try {
                                 return kodiRequestValidator.validate(this);
                             }
@@ -182,7 +182,7 @@ angular.module('kodi')
                                 return false;
                             }
                         },
-                        onbeforependingProcessing : function () {
+                        onbeforependingProcessing: function () {
                             if (this.getOption('queue') == false) {
                                 this.defer.notify('Don\'t wait the queue by option');
                                 this.process();
@@ -190,17 +190,17 @@ angular.module('kodi')
                                 return false;
                             }
                         },
-                        onpendingProcessing: function () {
+                        onpendingProcessing:       function () {
                             $kodiRequestQueue.add(this, false);
                         },
-                        onprocess          : function () {
+                        onprocess:                 function () {
                             kodiConnexionService.send(this.toJson());
                         },
-                        onsuccess          : function (event, from, to, response) {
+                        onsuccess:                 function (event, from, to, response) {
                             this.response = response;
                             this.defer.resolve(response.data);
                         },
-                        onfail : function(event, from, to, data) {
+                        onfail:                    function (event, from, to, data) {
                             this.defer.reject(data);
                         }
                     }

@@ -22,9 +22,9 @@ angular.module('kodi')
 
             kodiResponse.prototype.toJson = function () {
                 return JSON.stringify({
-                    id     : this.id,
+                    id:      this.id,
                     jsonrpc: this.jsonrpc,
-                    result : this.result
+                    result:  this.result
                 });
             };
 

@@ -25,7 +25,7 @@ angular.module('kodi')
                 this.params;
                 this.hash = this.getHash();
                 this.options = {
-                    cache   : true,
+                    cache:    true,
                     validate: true
                 };
 
@@ -37,10 +37,10 @@ angular.module('kodi')
 
             kodiRequest.prototype.toJson = function () {
                 return JSON.stringify({
-                    id     : this.id,
+                    id:      this.id,
                     jsonrpc: this.jsonrpc,
-                    method : this.method,
-                    params : this.params || undefined
+                    method:  this.method,
+                    params:  this.params || undefined
                 });
             };
 

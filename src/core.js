@@ -34,7 +34,7 @@ angular.module('kodi', ['websocket', 'angular-md5'])
              */
             _this.onReady = function (callback) {
                 if (!_this.isReady) {
-                    $rootScope.$on('kodi.ready', function(){
+                    $rootScope.$on('kodi.ready', function () {
                         callback.call(null, _this.kodiServer);
                     });
                 }
@@ -73,7 +73,7 @@ angular.module('kodi', ['websocket', 'angular-md5'])
                         _this.isReady = true;
                         $rootScope.$emit('kodi.ready', _this.kodiServer);
                     },
-                    function(){
+                    function () {
                         console.error('FATAL ERROR');
                     }
                 );
