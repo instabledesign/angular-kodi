@@ -1,12 +1,11 @@
 #TODO list
 
 * Put property private and create getter and setter
-* 
-* hydratation process of album
-* hydratation process of artist
+* create a getter for method type properties
+* create / handle notification
+* implement queue lifetime and number of parallel process
+* request cache check
+* request validation
+* hydratation process of player
 * hydratation process of genre
-* hydratation process of song
-* hydratation process of tvshow
-* hydratation process of season
-* hydratation process of episode
 
