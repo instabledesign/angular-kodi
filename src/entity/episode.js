@@ -10,11 +10,11 @@ angular.module('kodi')
  *
  * provide kodiEpisode entity
  */
-    .factory('kodiEpisode', [,
+    .factory('kodiEpisode', [
         function () {
-
             function kodiEpisode() {
                 if (!(this instanceof kodiEpisode)) throw 'You must instanciate with "new" operator';
+
                 var _this = this;
 
                 _this._id;

@@ -10,8 +10,8 @@ angular.module('kodi')
  *
  * Provide song service method
  */
-    .service('kodiSongService', [
-        function () {
+    .service('kodiSongService', ['kodiSong', 'kodiCache',
+        function (kodiSong, kodiCache) {
             var _this = this;
 
             _this.songCache = kodiCache.song;

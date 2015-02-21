@@ -10,8 +10,8 @@ angular.module('kodi')
  *
  * Provide TV show service method
  */
-    .service('kodiTvShowService', [
-        function () {
+    .service('kodiTvShowService', ['kodiTvShow', 'kodiCache',
+        function (kodiTvShow, kodiCache) {
             var _this = this;
 
             _this.tvShowCache = kodiCache.tvShow;

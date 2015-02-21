@@ -10,7 +10,7 @@ angular.module('kodi')
  *
  * Provide album service method
  */
-    .service('kodiAlbumService', ['KodiAlbum', 'kodiCache',
+    .service('kodiAlbumService', ['kodiAlbum', 'kodiCache',
         function (kodiAlbum, kodiCache) {
             var _this = this;
 

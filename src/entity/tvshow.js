@@ -12,7 +12,6 @@ angular.module('kodi')
  */
     .factory('kodiTvShow', [
         function () {
-
             function kodiTvShow() {
                 if (!(this instanceof kodiTvShow)) throw 'You must instanciate with "new" operator';
 

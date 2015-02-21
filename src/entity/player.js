@@ -10,9 +10,8 @@ angular.module('kodi')
  *
  * provide kodiPlayer entity
  */
-    .factory('kodiPlayer', [,
+    .factory('kodiPlayer', [
         function () {
-
             function kodiPlayer() {
                 if (!(this instanceof kodiPlayer)) throw 'You must instanciate with "new" operator';
 
