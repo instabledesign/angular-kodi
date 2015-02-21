@@ -10,8 +10,8 @@ angular.module('kodi')
  *
  * Provide request service method
  */
-    .service('kodiRequestService', ['$q', 'kodiRequest', 'kodiRequestValidator', 'kodiRequestCache', '$kodiRequestQueue', 'kodiConnexionService',
-        function ($q, kodiRequest, kodiRequestValidator, kodiRequestCache, $kodiRequestQueue, kodiConnexionService) {
+    .service('kodiRequestService', ['$q', 'kodiRequest', 'kodiRequestValidator', 'kodiCache', '$kodiRequestQueue', 'kodiConnexionService',
+        function ($q, kodiRequest, kodiRequestValidator, kodiCache, $kodiRequestQueue, kodiConnexionService) {
 
             var _this = this;
             var requestId = 1;
@@ -75,7 +75,7 @@ angular.module('kodi')
              * @param response
              */
             _this.resolveWith = function (response) {
-                var request = kodiRequestCache.byId.get(response.id);
+                var request = kodiCache.request.get(response.id);
                 if (!request) throw 'No request was found for response id "' + response.id + '"';
 
                 request.success(response);
@@ -146,8 +146,7 @@ angular.module('kodi')
                             this.history = [];
 
                             // TODO better cache manage
-                            kodiRequestCache.byId.put(this.id, this);
-                            kodiRequestCache.byHash.put(this.hash, this);
+                            kodiCache.request.insert(this);
                             //if (this.getOption('cache') == true && kodiCache.has(this.hash)) {
                             //    var cachedRequest = kodiCache.get(this.hash);
                             //

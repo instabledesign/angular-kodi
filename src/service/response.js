@@ -10,8 +10,8 @@ angular.module('kodi')
  *
  * Provide response service method
  */
-    .service('kodiResponseService', ['kodiResponse', 'kodiServerService', 'kodiAlbumService', 'kodiArtistService', 'kodiEpisodeService', 'kodiGenreService', 'kodiMovieService', 'kodiPlayerService', 'kodiSeasonService', 'kodiSongService', 'kodiTvShowService',
-        function (kodiResponse, kodiServerService, kodiAlbumService, kodiArtistService, kodiEpisodeService, kodiGenreService, kodiMovieService, kodiPlayerService, kodiSeasonService, kodiSongService, kodiTvShowService) {
+    .service('kodiResponseService', ['kodiResponse', 'kodiCache', 'kodiServerService', 'kodiAlbumService', 'kodiArtistService', 'kodiEpisodeService', 'kodiGenreService', 'kodiMovieService', 'kodiPlayerService', 'kodiSeasonService', 'kodiSongService', 'kodiTvShowService',
+        function (kodiResponse, kodiCache, kodiServerService, kodiAlbumService, kodiArtistService, kodiEpisodeService, kodiGenreService, kodiMovieService, kodiPlayerService, kodiSeasonService, kodiSongService, kodiTvShowService) {
 
             var _this = this;
 
@@ -26,6 +26,8 @@ angular.module('kodi')
 
                 var objectService = _this.guess(response);
                 response.data = objectService.hydrateFormResponse(response);
+
+                kodiCache.response.insert(response);
 
                 return response;
             };
