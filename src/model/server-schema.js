@@ -15,11 +15,7 @@ angular.module('kodi')
 
             function kodiServerSchema(schema) {
                 if (!(this instanceof kodiServerSchema)) throw 'You must instanciate with "new" operator';
-                if (
-                    !schema.methods || !schema.notifications || !schema.types
-                ) {
-                    throw 'Invalid schema';
-                }
+                if (!schema.methods || !schema.notifications || !schema.types) throw 'Invalid schema';
 
                 var schemaTypes = angular.copy(schema.types);
                 var _this = this;
