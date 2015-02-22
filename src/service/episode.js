@@ -12,9 +12,9 @@ angular.module('kodi')
  */
     .service('kodiEpisodeService', ['kodiEpisode', 'kodiCache',
         function (kodiEpisode, kodiCache) {
-            var _this = this;
 
-            _this.episodeCache = kodiCache.episode;
+            var _this = this;
+            var cache = kodiCache.getEpisode();
 
             /**
              * Hydrate a kodiEpisode or an array of kodiEpisode
@@ -24,7 +24,7 @@ angular.module('kodi')
              * @returns DynamicView
              */
             _this.hydrateFormResponse = function (response) {
-                var responseView = _this.episodeCache.addDynamicView();
+                var responseView = cache.addDynamicView();
                 var result = responseView.applyFind({'_response': {'$in': response.id.toString()}});
 
                 if (response.result.hasOwnProperty('episodes')) {
@@ -57,14 +57,14 @@ angular.module('kodi')
              * @returns kodiEpisode
              */
             _this.updateOrCreate = function (episodeId, data) {
-                var episode = _this.episodeCache.get(episodeId);
+                var episode = cache.get(episodeId);
 
                 if (episode) {
                     _this.update(episode, data);
                 }
                 else {
                     episode = _this.create(data);
-                    _this.episodeCache.insert(episode);
+                    cache.insert(episode);
                 }
 
                 return episode;

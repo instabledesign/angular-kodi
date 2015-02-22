@@ -12,9 +12,9 @@ angular.module('kodi')
  */
     .service('kodiAlbumService', ['kodiAlbum', 'kodiCache',
         function (kodiAlbum, kodiCache) {
-            var _this = this;
 
-            _this.albumCache = kodiCache.album;
+            var _this = this;
+            var cache = kodiCache.getAlbum();
 
             /**
              * Hydrate a kodiAlbum or an array of kodiAlbum
@@ -24,7 +24,7 @@ angular.module('kodi')
              * @returns DynamicView
              */
             _this.hydrateFormResponse = function (response) {
-                var responseView = _this.albumCache.addDynamicView();
+                var responseView = cache.addDynamicView();
                 var result = responseView.applyFind({'_response': {'$in': response.id.toString()}});
 
                 if (response.result.hasOwnProperty('albums')) {
@@ -57,14 +57,14 @@ angular.module('kodi')
              * @returns kodiAlbum
              */
             _this.updateOrCreate = function (albumId, data) {
-                var album = _this.albumCache.get(albumId);
+                var album = cache.get(albumId);
 
                 if (album) {
                     _this.update(album, data);
                 }
                 else {
                     album = _this.create(data);
-                    _this.albumCache.insert(album);
+                    cache.insert(album);
                 }
 
                 return album;

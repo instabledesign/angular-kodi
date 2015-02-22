@@ -12,6 +12,7 @@ angular.module('kodi')
  */
     .service('kodiServerService', ['kodiServer', 'kodiServerSchema',
         function (kodiServer, kodiServerSchema) {
+
             var _this = this;
 
             _this.hydrateFormResponse = function (response) {

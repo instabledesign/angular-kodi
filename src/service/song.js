@@ -12,9 +12,9 @@ angular.module('kodi')
  */
     .service('kodiSongService', ['kodiSong', 'kodiCache',
         function (kodiSong, kodiCache) {
-            var _this = this;
 
-            _this.songCache = kodiCache.song;
+            var _this = this;
+            var cache = kodiCache.getSong();
 
             /**
              * Hydrate a kodiSong or an array of kodiSong
@@ -24,7 +24,7 @@ angular.module('kodi')
              * @returns DynamicView
              */
             _this.hydrateFormResponse = function (response) {
-                var responseView = _this.songCache.addDynamicView();
+                var responseView = cache.addDynamicView();
                 var result = responseView.applyFind({'_response': {'$in': response.id.toString()}});
 
                 if (response.result.hasOwnProperty('songs')) {
@@ -57,14 +57,14 @@ angular.module('kodi')
              * @returns kodiSong
              */
             _this.updateOrCreate = function (songId, data) {
-                var song = _this.songCache.get(songId);
+                var song = cache.get(songId);
 
                 if (song) {
                     _this.update(song, data);
                 }
                 else {
                     song = _this.create(data);
-                    _this.songCache.insert(song);
+                    cache.insert(song);
                 }
 
                 return song;

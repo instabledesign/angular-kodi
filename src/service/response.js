@@ -14,6 +14,7 @@ angular.module('kodi')
         function (kodiResponse, kodiCache, kodiServerService, kodiAlbumService, kodiArtistService, kodiEpisodeService, kodiGenreService, kodiMovieService, kodiPlayerService, kodiSeasonService, kodiSongService, kodiTvShowService) {
 
             var _this = this;
+            var cache = kodiCache.getResponse();
 
             /**
              * Create and hydrate a kodiResponse
@@ -27,7 +28,7 @@ angular.module('kodi')
                 var objectService = _this.guess(response);
                 response.data = objectService.hydrateFormResponse(response);
 
-                kodiCache.response.insert(response);
+                cache.insert(response);
 
                 return response;
             };

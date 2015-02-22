@@ -12,9 +12,9 @@ angular.module('kodi')
  */
     .service('kodiArtistService', ['kodiArtist', 'kodiCache',
         function (kodiArtist, kodiCache) {
-            var _this = this;
 
-            _this.artistCache = kodiCache.artist;
+            var _this = this;
+            var cache = kodiCache.getArtist();
 
             /**
              * Hydrate a kodiArtist or an array of kodiArtist
@@ -24,7 +24,7 @@ angular.module('kodi')
              * @returns DynamicView
              */
             _this.hydrateFormResponse = function (response) {
-                var responseView = _this.artistCache.addDynamicView();
+                var responseView = cache.addDynamicView();
                 var result = responseView.applyFind({'_response': {'$in': response.id.toString()}});
 
                 if (response.result.hasOwnProperty('artists')) {
@@ -57,14 +57,14 @@ angular.module('kodi')
              * @returns kodiArtist
              */
             _this.updateOrCreate = function (artistId, data) {
-                var artist = _this.artistCache.get(artistId);
+                var artist = cache.get(artistId);
 
                 if (artist) {
                     _this.update(artist, data);
                 }
                 else {
                     artist = _this.create(data);
-                    _this.artistCache.insert(artist);
+                    cache.insert(artist);
                 }
 
                 return artist;

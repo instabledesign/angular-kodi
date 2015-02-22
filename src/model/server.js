@@ -20,13 +20,12 @@ angular.module('kodi')
                 if (!schema instanceof kodiServerSchema) throw 'Schema must be a "kodiServerSchema"';
 
                 var _this = this;
-
-                _this.schema = schema;
+                var serverSchema = schema;
 
                 /**
                  * Create proxy methods object from schema
                  */
-                for (var method in _this.schema.methods) {
+                for (var method in serverSchema.methods) {
                     var methodFrag = method.split('.');
                     if (!_this.hasOwnProperty(methodFrag[0])) {
                         _this[methodFrag[0]] = {};
@@ -52,7 +51,7 @@ angular.module('kodi')
                 /**
                  * Create proxy notifications from schema
                  */
-                for (var notification in _this.schema.notifications) {
+                for (var notification in serverSchema.notifications) {
                     var notificationFrag = notification.split('.');
                     if (!_this.hasOwnProperty(notificationFrag[0])) {
                         _this[notificationFrag[0]] = {};
@@ -70,8 +69,17 @@ angular.module('kodi')
                     })(notification);
                 }
 
+                _this.getServerSchema = function() {
+                    return serverSchema;
+                };
+
+
                 return _this;
             }
+
+            kodiServer.prototype.getFields = function (name) {
+                return this.getServerSchema().getTypeFields(name);
+            };
 
             return kodiServer;
         }

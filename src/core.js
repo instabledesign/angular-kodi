@@ -24,8 +24,8 @@ angular.module('kodi', ['websocket', 'angular-md5'])
         function ($rootScope, kodiRequestService, kodiResponseService) {
             var _this = this;
 
-            _this.isReady = false;
-            _this.kodiServer = {};
+            var isReady = false;
+            var server = {};
 
             /**
              * When the introspect request was done
@@ -33,13 +33,13 @@ angular.module('kodi', ['websocket', 'angular-md5'])
              * @param callback Provide a kodiServer object
              */
             _this.onReady = function (callback) {
-                if (!_this.isReady) {
+                if (!isReady) {
                     $rootScope.$on('kodi.ready', function () {
-                        callback.call(null, _this.kodiServer);
+                        callback.call(null, server);
                     });
                 }
                 else {
-                    callback.call(null, _this.kodiServer);
+                    callback.call(null, server);
                 }
             };
 
@@ -69,9 +69,9 @@ angular.module('kodi', ['websocket', 'angular-md5'])
             $rootScope.$on('kodi.open', function () {
                 _this.request('JSONRPC.Introspect', null, {'validate': false, 'hydrate': false}).then(
                     function (kodiServer) {
-                        _this.kodiServer = kodiServer;
-                        _this.isReady = true;
-                        $rootScope.$emit('kodi.ready', _this.kodiServer);
+                        server = kodiServer;
+                        isReady = true;
+                        $rootScope.$emit('kodi.ready', server);
                     },
                     function () {
                         console.error('FATAL ERROR');

@@ -12,9 +12,9 @@ angular.module('kodi')
  */
     .service('kodiMovieService', ['kodiMovie', 'kodiCache',
         function (kodiMovie, kodiCache) {
-            var _this = this;
 
-            _this.movieCache = kodiCache.movie;
+            var _this = this;
+            var cache = kodiCache.getMovie();
 
             /**
              * Hydrate a kodiMovie or an array of kodiMovie
@@ -24,7 +24,7 @@ angular.module('kodi')
              * @returns DynamicView
              */
             _this.hydrateFormResponse = function (response) {
-                var responseView = _this.movieCache.addDynamicView();
+                var responseView = cache.addDynamicView();
                 var result = responseView.applyFind({'_response': {'$in': response.id.toString()}});
 
                 if (response.result.hasOwnProperty('movies')) {
@@ -57,14 +57,14 @@ angular.module('kodi')
              * @returns kodiMovie
              */
             _this.updateOrCreate = function (movieId, data) {
-                var movie = _this.movieCache.get(movieId);
+                var movie = cache.get(movieId);
 
                 if (movie) {
                     _this.update(movie, data);
                 }
                 else {
                     movie = _this.create(data);
-                    _this.movieCache.insert(movie);
+                    cache.insert(movie);
                 }
 
                 return movie;

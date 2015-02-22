@@ -53,7 +53,7 @@
                         console.info(kodiServer);
 
                         // TODO simplify the properties access with getter
-                        kodiServer.VideoLibrary.GetMovies({properties:kodiServer.schema.types['Video.Fields.Movie'].items.enums}).then(
+                        kodiServer.VideoLibrary.GetMovies({properties:kodiServer.getFields('Video.Fields.Movie')}).then(
                             function (movies) {
                                 console.log(movies);
                             },

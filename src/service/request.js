@@ -15,6 +15,7 @@ angular.module('kodi')
 
             var _this = this;
             var requestId = 1;
+            var cache = kodiCache.getRequest();
 
             /**
              * Create and initialize request
@@ -75,7 +76,7 @@ angular.module('kodi')
              * @param response
              */
             _this.resolveWith = function (response) {
-                var request = kodiCache.request.get(response.id);
+                var request = cache.get(response.id);
                 if (!request) throw 'No request was found for response id "' + response.id + '"';
 
                 request.success(response);
@@ -146,7 +147,7 @@ angular.module('kodi')
                             this.history = [];
 
                             // TODO better cache manage
-                            kodiCache.request.insert(this);
+                            cache.insert(this);
                             //if (this.getOption('cache') == true && kodiCache.has(this.hash)) {
                             //    var cachedRequest = kodiCache.get(this.hash);
                             //

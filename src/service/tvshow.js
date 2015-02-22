@@ -12,9 +12,9 @@ angular.module('kodi')
  */
     .service('kodiTvShowService', ['kodiTvShow', 'kodiCache',
         function (kodiTvShow, kodiCache) {
-            var _this = this;
 
-            _this.tvShowCache = kodiCache.tvShow;
+            var _this = this;
+            var cache = kodiCache.getTvShow();
 
             /**
              * Hydrate a kodiTvShow or an array of kodiTvShow
@@ -24,7 +24,7 @@ angular.module('kodi')
              * @returns DynamicView
              */
             _this.hydrateFormResponse = function (response) {
-                var responseView = _this.tvShowCache.addDynamicView();
+                var responseView = cache.addDynamicView();
                 var result = responseView.applyFind({'_response': {'$in': response.id.toString()}});
 
                 if (response.result.hasOwnProperty('tvShows')) {
@@ -57,14 +57,14 @@ angular.module('kodi')
              * @returns kodiTvShow
              */
             _this.updateOrCreate = function (tvShowId, data) {
-                var tvShow = _this.tvShowCache.get(tvShowId);
+                var tvShow = cache.get(tvShowId);
 
                 if (tvShow) {
                     _this.update(tvShow, data);
                 }
                 else {
                     tvShow = _this.create(data);
-                    _this.tvShowCache.insert(tvShow);
+                    cache.insert(tvShow);
                 }
 
                 return tvShow;
