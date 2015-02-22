@@ -1,7 +1,6 @@
 #TODO list
 
 * Put property private and create getter and setter
-* create a getter for method type properties
 * create / handle notification
 * implement queue lifetime and number of parallel process
 * request cache check

@@ -128,6 +128,23 @@ angular.module('kodi')
                 return _this;
             }
 
+            kodiServerSchema.prototype.getTypeFields = function(name) {
+                if (!this.types.hasOwnProperty(name)) throw 'Type "' + name + '" was not found';
+
+                var type = this.types[name];
+                var enums;
+
+                if (type.hasOwnProperty('enums')) {
+                    return type.enums;
+                }
+
+                if (type.hasOwnProperty('items') && type.items.hasOwnProperty('enums')) {
+                    return type.items.enums;
+                }
+
+                throw 'No value found in "' + name + '"';
+            };
+
             return kodiServerSchema;
         }
     ]);
