@@ -132,7 +132,6 @@ angular.module('kodi')
                 if (!this.types.hasOwnProperty(name)) throw 'Type "' + name + '" was not found';
 
                 var type = this.types[name];
-                var enums;
 
                 if (type.hasOwnProperty('enums')) {
                     return type.enums;
