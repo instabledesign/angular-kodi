@@ -67,7 +67,7 @@ angular.module('kodi', ['websocket', 'angular-md5'])
              * in order to create and hydrate a kodiServer and emit a "kodi.ready" event
              */
             $rootScope.$on('kodi.open', function () {
-                _this.request('JSONRPC.Introspect', null, {'validate': false, 'hydrate': false}).then(
+                _this.request('JSONRPC.Introspect', null, {'validate': false}).then(
                     function (kodiServer) {
                         server = kodiServer;
                         isReady = true;

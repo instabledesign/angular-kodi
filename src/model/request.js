@@ -23,14 +23,18 @@ angular.module('kodi')
                 this.jsonrpc = JSONRPC_VERSION;
                 this.method;
                 this.params;
-                this.hash = this.getHash();
+                this.hash;
                 this.options = {
                     cache:    true,
-                    validate: true
+                    validate: true,
+                    raw:      false,
+                    queue:    true
                 };
 
                 angular.extend(this, attributes);
                 angular.extend(this.options, options);
+
+                this.hash = this.getHash();
 
                 return this;
             }
@@ -49,7 +53,7 @@ angular.module('kodi')
             };
 
             kodiRequest.prototype.getOption = function (name, defaultValue) {
-                return this.options.hasOwnProperty(name) ? this.options[name] : defaultValue || null;
+                return this.options.hasOwnProperty(name) ? this.options[name] : (defaultValue || null);
             };
 
             return kodiRequest;

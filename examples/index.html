@@ -52,34 +52,27 @@
 
                         console.info(kodiServer);
 
-                        // TODO simplify the properties access with getter
                         kodiServer.VideoLibrary.GetMovies({properties:kodiServer.getFields('Video.Fields.Movie')}).then(
                             function (movies) {
-                                console.log(movies);
+                                console.log('Request 1 result : ', movies.data());
                             },
-                            function () {
-
-                            },
+                            function () {},
                             function (notif) {
-                                console.log(notif);
+                                console.log('Request 1 Status notification : ', notif);
                             }
                         );
 
-//                        TODO test cache request
-//                        setTimeout(function(){
-//                            kodi.VideoLibrary.GetMovies(null, {'hydrate': false}).then(
-//                                function (movies) {
-//                                    console.log('2', movies);
-//                                    $scope.movie = movies;
-//                                },
-//                                function () {
-//
-//                                },
-//                                function (p) {
-//                                    console.log('2', p);
-//                                }
-//                            );
-//                        }, 1000);
+                        setTimeout(function(){
+                            kodiServer.VideoLibrary.GetMovies({properties:kodiServer.getFields('Video.Fields.Movie')}, {'raw': true}).then(
+                                function (movies) {
+                                    console.log('Request 2 result : ', movies);
+                                },
+                                function () {},
+                                function (notif) {
+                                    console.log('Request 2 Status notification : ', notif);
+                                }
+                            );
+                        }, 1000);
                     });
                 });
     </script>

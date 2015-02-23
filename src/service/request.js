@@ -48,9 +48,13 @@ angular.module('kodi')
 
                 // Asynchronous to have the really first notification
                 setTimeout(function () {
-                    request.validate();
-                    request.pendingProcessing();
-                    $kodiRequestQueue.process();
+                    request.resolveFromCache();
+
+                    if (request.current !== 'resolvedFromCache') {
+                        request.validate();
+                        request.pendingProcessing();
+                        $kodiRequestQueue.process();
+                    }
                 }, 0);
 
                 return request.defer.promise;
@@ -99,6 +103,11 @@ angular.module('kodi')
                             to:   'created'
                         },
                         {
+                            name: 'resolveFromCache',
+                            from: 'created',
+                            to:   'resolvedFromCache'
+                        },
+                        {
                             name: 'validate',
                             from: 'created',
                             to:   'validated'
@@ -144,27 +153,30 @@ angular.module('kodi')
                          * Event statemachine handlers
                          */
                         onbeforecreate:            function () {
-                            this.history = [];
-
-                            // TODO better cache manage
-                            cache.insert(this);
-                            //if (this.getOption('cache') == true && kodiCache.has(this.hash)) {
-                            //    var cachedRequest = kodiCache.get(this.hash);
-                            //
-                            //    if (cachedRequest != null) {
-                            //        switch (cachedRequest.current) {
-                            //            case 'failed':
-                            //                this.defer = $q.defer();
-                            //                this.defer.notify('Similar request was found on cache but in failed status');
-                            //                return;
-                            //            default:
-                            //                this.defer = cachedRequest.defer;
-                            //                return;
-                            //        }
-                            //    }
-                            //}
-
                             this.defer = $q.defer();
+                            cache.insert(this);
+                        },
+                        onbeforeresolveFromCache: function () {
+                            if (this.getOption('cache') == true) {
+                                var _this = this;
+                                var resultSet = cache.findOne({'$and':[{'hash': _this.hash}, {'id': {'$ne': _this.id}}]});
+
+                                if (resultSet !== null) {
+                                    var cachedRequest = resultSet[0];
+                                    cachedRequest.defer.promise.then(function() {
+                                        _this.response = cachedRequest.response;
+                                        _this.defer.resolve(
+                                            _this.getOption('raw') === true ?
+                                                _this.response.result :
+                                                _this.response.data
+                                        );
+                                    });
+
+                                    return true;
+                                }
+                            }
+
+                            return false;
                         },
                         onbeforevalidate:          function () {
                             if (this.getOption('validate') == false) {
@@ -199,7 +211,11 @@ angular.module('kodi')
                         },
                         onsuccess:                 function (event, from, to, response) {
                             this.response = response;
-                            this.defer.resolve(response.data);
+                            this.defer.resolve(
+                                this.getOption('raw') === true ?
+                                    this.response.result :
+                                    this.response.data
+                            );
                         },
                         onfail:                    function (event, from, to, data) {
                             this.defer.reject(data);

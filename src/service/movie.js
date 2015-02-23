@@ -24,8 +24,6 @@ angular.module('kodi')
              * @returns DynamicView
              */
             _this.hydrateFormResponse = function (response) {
-                var responseView = cache.addDynamicView();
-                var result = responseView.applyFind({'_response': {'$in': response.id.toString()}});
 
                 if (response.result.hasOwnProperty('movies')) {
                     var movies = response.result.movies;
@@ -45,7 +43,11 @@ angular.module('kodi')
                     }
                 }
 
-                return result;
+                return cache
+                    .addDynamicView()
+                    .applyFind(
+                        {'_response': {'$contains': response.id}}
+                    );
             };
 
             /**
@@ -57,7 +59,7 @@ angular.module('kodi')
              * @returns kodiMovie
              */
             _this.updateOrCreate = function (movieId, data) {
-                var movie = cache.get(movieId);
+                var movie = cache.findOne({'movieid': movieId});
 
                 if (movie) {
                     _this.update(movie, data);

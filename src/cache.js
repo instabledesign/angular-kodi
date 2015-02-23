@@ -16,14 +16,14 @@ angular.module('kodi')
 
             var db = new kodiLoki('kodi');
             var request = db.addCollection('request', ['id', 'hash']);
-            var response = db.addCollection('response', ['id']);
-            var album = db.addCollection('album', ['id']);
-            var artist = db.addCollection('artist', ['id']);
-            var episode = db.addCollection('episode', ['id']);
-            var movie = db.addCollection('movie', ['id']);
-            var season = db.addCollection('season', ['id']);
-            var song = db.addCollection('song', ['id']);
-            var tvShow = db.addCollection('tvshow', ['id']);
+            var response = db.addCollection('response');
+            var album = db.addCollection('album', ['albumid']);
+            var artist = db.addCollection('artist', ['artistid']);
+            var episode = db.addCollection('episode', ['episodeid']);
+            var movie = db.addCollection('movie', ['movieid']);
+            var season = db.addCollection('season', ['seasonid']);
+            var song = db.addCollection('song', ['songid']);
+            var tvShow = db.addCollection('tvshow', ['tvshowid']);
 
             _this.getDb = function () {
                 return db;
