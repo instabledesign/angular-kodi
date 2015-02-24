@@ -163,14 +163,22 @@ angular.module('kodi')
 
                                 if (resultSet !== null) {
                                     var cachedRequest = resultSet[0];
-                                    cachedRequest.defer.promise.then(function() {
-                                        _this.response = cachedRequest.response;
-                                        _this.defer.resolve(
-                                            _this.getOption('raw') === true ?
-                                                _this.response.result :
-                                                _this.response.data
-                                        );
-                                    });
+                                    cachedRequest.defer.promise.then(
+                                        function() {
+                                            _this.response = cachedRequest.response;
+                                            _this.defer.resolve(
+                                                _this.getOption('raw') === true ?
+                                                    _this.response.result :
+                                                    _this.response.data
+                                            );
+                                        },
+                                        function (error) {
+                                            _this.defer.reject(error);
+                                        },
+                                        function (notify) {
+                                            _ths.defer.notify(notify);
+                                        }
+                                    );
 
                                     return true;
                                 }
@@ -184,6 +192,10 @@ angular.module('kodi')
 
                                 return false;
                             }
+
+                            // TODO implement validation
+                            this.defer.notify('Validation comming soon');
+                            return false;
                         },
                         onvalidate:                function (event) {
                             try {
