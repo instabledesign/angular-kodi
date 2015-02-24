@@ -15,7 +15,7 @@ angular.module('kodi')
 
             var _this = this;
 
-            _this.hydrateFormResponse = function (response) {
+            _this.hydrateFromResponse = function (response) {
                 return new kodiServer(
                     new kodiServerSchema(response.result)
                 );

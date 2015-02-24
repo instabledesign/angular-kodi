@@ -1,20 +1,28 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html data-ng-app="app">
 <head>
     <title>Angular kodi module</title>
+
+    <link href="../lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        .panel-heading pre {
+            border: none;
+        }
+    </style>
     <script type="text/javascript" src="../lib/angular/angular.min.js"></script>
+    <script type="text/javascript" src="../lib/angular-route/angular-route.min.js"></script>
     <script type="text/javascript" src="../lib/angular-md5/angular-md5.min.js"></script>
-    <script type="text/javascript" src="../lib/angular-websocket-provider/dist/angular-websocket.min.js"></script>
+    <script type="text/javascript" src="../lib/angular-websocket-provider/dist/angular-websocket.js"></script>
     <!--<script type="text/javascript" src="../lib/angular-websocket-provider/dist/angular-websocket-log.min.js"></script>-->
     <script type="text/javascript" src="../lib/javascript-state-machine/state-machine.min.js"></script>
     <script type="text/javascript" src="../lib/lokijs/build/lokijs.min.js"></script>
+
     <script type="text/javascript" src="../src/core.js"></script>
     <script type="text/javascript" src="../src/cache.js"></script>
     <script type="text/javascript" src="../src/queue/request.js"></script>
     <script type="text/javascript" src="../src/validator/request.js"></script>
     <script type="text/javascript" src="../src/transport/connexion.js"></script>
     <script type="text/javascript" src="../src/model/server.js"></script>
-    <script type="text/javascript" src="../src/model/loki.js"></script>
     <script type="text/javascript" src="../src/model/server-schema.js"></script>
     <script type="text/javascript" src="../src/model/request.js"></script>
     <script type="text/javascript" src="../src/model/response.js"></script>
@@ -27,6 +35,7 @@
     <script type="text/javascript" src="../src/entity/season.js"></script>
     <script type="text/javascript" src="../src/entity/song.js"></script>
     <script type="text/javascript" src="../src/entity/tvshow.js"></script>
+    <script type="text/javascript" src="../src/service/loki.js"></script>
     <script type="text/javascript" src="../src/service/server.js"></script>
     <script type="text/javascript" src="../src/service/request.js"></script>
     <script type="text/javascript" src="../src/service/response.js"></script>
@@ -39,47 +48,110 @@
     <script type="text/javascript" src="../src/service/season.js"></script>
     <script type="text/javascript" src="../src/service/song.js"></script>
     <script type="text/javascript" src="../src/service/tvshow.js"></script>
-    <script type="application/javascript">
-        var myApp = angular.module('myApp', ['kodi'])
-                .config(['$websocketProvider',
-                    function ($websocketProvider) {
-                        // Configuration of the $websocketProvider
-                        $websocketProvider.path = 'ws://localhost:9090';
-                    }
-                ])
-                .controller('MyCtrl', function (kodiCore) {
-                    kodiCore.onReady(function (kodiServer) {
-
-                        console.info(kodiServer);
-
-                        kodiServer.VideoLibrary.GetMovies({properties:kodiServer.getFields('Video.Fields.Movie')}).then(
-                            function (movies) {
-                                console.log('Request 1 result : ', movies.data());
-                            },
-                            function () {},
-                            function (notif) {
-                                console.log('Request 1 Status notification : ', notif);
-                            }
-                        );
-
-                        setTimeout(function(){
-                            kodiServer.VideoLibrary.GetMovies({properties:kodiServer.getFields('Video.Fields.Movie')}, {'raw': true}).then(
-                                function (movies) {
-                                    console.log('Request 2 result : ', movies);
-                                },
-                                function () {},
-                                function (notif) {
-                                    console.log('Request 2 Status notification : ', notif);
-                                }
-                            );
-                        }, 1000);
-                    });
-                });
-    </script>
+    <script src="app.js"></script>
 </head>
 <body>
-<div data-ng-app="myApp">
-    <div data-ng-controller="MyCtrl">Open the console and refresh page to show the magic</div>
+<nav class="navbar navbar-default navbar-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#/home">Angular-kodi</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="#/simple"><span>Simple</span></a></li>
+                <li><a href="#/movies"><span>Movies</span></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div data-ng-view></div>
 </div>
+<script type="text/ng-template" id="simple.html">
+    <h3>Simple query example</h3>
+    <p>By default, all the <code>.panel</code> does is apply some basic border and padding to contain some content.</p>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+<pre>
+kodiCore.onReady(function (kodiServer) {
+    kodiServer.JSONRPC.Version().then(
+        function (data) {
+            $scope.version = data.version;
+        }
+    );
+});
+</pre>
+        </div>
+        <div class="panel-body">
+            <p data-ng-if="version">Your currrent version of JSONRPC was <span class="badge">{{ version.major }}.{{ version.minor }}.{{ version.patch }}</span></p>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+<pre>
+kodiCore.onReady(function (kodiServer) {
+    kodiServer.System.GetProperties({properties: kodiServer.getFields('System.Property.Name')}).then(
+        function (system) {
+            $scope.system = system;
+        }
+    );
+});
+</pre>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
+                <li class="list-group-item">System capabilities</li>
+                <li class="list-group-item {{ system.canhibernate ? 'list-group-item-success' : 'list-group-item-danger' }}">Hibernate</li>
+                <li class="list-group-item {{ system.canreboot ? 'list-group-item-success' : 'list-group-item-danger' }}">Reboot</li>
+                <li class="list-group-item {{ system.canshutdown ? 'list-group-item-success' : 'list-group-item-danger' }}">Shutdown</li>
+                <li class="list-group-item {{ system.cansuspend ? 'list-group-item-success' : 'list-group-item-danger' }}">Suspend</li>
+            </ul>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="movies.html">
+    <h3 id="panels-basic">Movies query example</h3>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+<pre>
+kodiCore.onReady(function (kodiServer) {
+    kodiServer.VideoLibrary.GetMovies({properties:kodiServer.getFields('Video.Fields.Movie')}).then(
+        function (movies) {
+            $scope.movies = movies;
+        }
+    );
+});
+</pre>
+        </div>
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th><a data-ng-click="sortBy('movieid')">#</a></th>
+                <th>actions</th>
+                <th><a data-ng-click="sortBy('title')">title</a></th>
+                <th>productBy</th>
+                <th>genre</th>
+                <th><a data-ng-click="sortBy('runtime')">runtime</a></th>
+                <th><a data-ng-click="sortBy('year')">year</a></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="movie in movies.data()">
+                <td>{{ movie.movieid }}</td>
+                <td>
+                    <i class="xcontrolicon-play2" data-ng-click="movie.play()"></i>
+                    <a href="http://www.imdb.com/title/{{ movie.imdbnumber }}" target="_blank">IMDB</a>
+                </td>
+                <td><a data-ui-sref="movie_show({movieid: movie.movieid})">{{ movie.label }}</a></td>
+                <td>{{ movie.director.join(', ') }}</td>
+                <td>{{ movie.genre.join(', ') }}</td>
+                <td>{{ movie.runtime }}</td>
+                <td>{{ movie.year }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</script>
 </body>
 </html>

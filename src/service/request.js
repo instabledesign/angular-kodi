@@ -167,7 +167,7 @@ angular.module('kodi')
                                         function() {
                                             _this.response = cachedRequest.response;
                                             _this.defer.resolve(
-                                                _this.getOption('raw') === true ?
+                                                _this.getOption('raw') === true || _this.response.data === false ?
                                                     _this.response.result :
                                                     _this.response.data
                                             );
@@ -176,7 +176,7 @@ angular.module('kodi')
                                             _this.defer.reject(error);
                                         },
                                         function (notify) {
-                                            _ths.defer.notify(notify);
+                                            _this.defer.notify(notify);
                                         }
                                     );
 
@@ -224,7 +224,7 @@ angular.module('kodi')
                         onsuccess:                 function (event, from, to, response) {
                             this.response = response;
                             this.defer.resolve(
-                                this.getOption('raw') === true ?
+                                this.getOption('raw') === true || this.response.data === false ?
                                     this.response.result :
                                     this.response.data
                             );

@@ -23,7 +23,7 @@ angular.module('kodi')
              *
              * @returns DynamicView
              */
-            _this.hydrateFormResponse = function (response) {
+            _this.hydrateFromResponse = function (response) {
                 var responseView = cache.addDynamicView();
                 var result = responseView.applyFind({'_response': {'$in': response.id.toString()}});
 

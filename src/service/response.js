@@ -26,7 +26,10 @@ angular.module('kodi')
                 var response = new kodiResponse(attributes);
 
                 var objectService = _this.guess(response);
-                response.data = objectService.hydrateFormResponse(response);
+
+                response.data = objectService.hasOwnProperty('hydrateFromResponse') ?
+                    objectService.hydrateFromResponse(response) :
+                    false;
 
                 cache.insert(response);
 
@@ -71,7 +74,6 @@ angular.module('kodi')
                         break;
 
                     case response.result.hasOwnProperty('genres'):
-                    case response.result.hasOwnProperty('genredetails'):
                         return kodiGenreService;
                         break;
 
@@ -95,6 +97,8 @@ angular.module('kodi')
                         return kodiTvShowService;
                         break;
                 }
+
+                return false;
             };
         }
     ]);

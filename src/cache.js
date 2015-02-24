@@ -24,6 +24,7 @@ angular.module('kodi')
             var season = db.addCollection('season', ['seasonid']);
             var song = db.addCollection('song', ['songid']);
             var tvShow = db.addCollection('tvshow', ['tvshowid']);
+            var genres = db.addCollection('genre');
 
             _this.getDb = function () {
                 return db;
@@ -63,6 +64,10 @@ angular.module('kodi')
 
             _this.getTvShow = function () {
                 return tvShow;
+            };
+
+            _this.getGenres = function () {
+                return genres;
             };
 
             return _this;

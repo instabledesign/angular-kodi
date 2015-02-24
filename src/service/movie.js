@@ -23,7 +23,7 @@ angular.module('kodi')
              *
              * @returns DynamicView
              */
-            _this.hydrateFormResponse = function (response) {
+            _this.hydrateFromResponse = function (response) {
 
                 if (response.result.hasOwnProperty('movies')) {
                     var movies = response.result.movies;
