@@ -5,5 +5,4 @@
 * implement queue lifetime and number of parallel process
 * request validation
 * hydratation process of player
-* hydratation process of genre
 
