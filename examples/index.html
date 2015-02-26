@@ -116,8 +116,12 @@ kodiCore.onReady(function (kodiServer) {
         <div class="panel-heading">
 <pre>
 kodiCore.onReady(function (kodiServer) {
-    kodiServer.VideoLibrary.GetMovies({properties:kodiServer.getFields('Video.Fields.Movie')}).then(
+    kodiServer.VideoLibrary.GetMovies({
+        properties: kodiServer.getFields('Video.Fields.Movie'),
+        limits: {end: 3}
+    }).then(
         function (movies) {
+            console.log(movies);
             $scope.movies = movies;
         }
     );
@@ -127,17 +131,97 @@ kodiCore.onReady(function (kodiServer) {
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
-                <th><a data-ng-click="sortBy('movieid')">#</a></th>
+                <th><a data-ng-click="sortBy(firstMovieSelection, 'movieid')">#</a></th>
                 <th>actions</th>
-                <th><a data-ng-click="sortBy('title')">title</a></th>
+                <th><a data-ng-click="sortBy(firstMovieSelection, 'title')">title</a></th>
                 <th>productBy</th>
                 <th>genre</th>
-                <th><a data-ng-click="sortBy('runtime')">runtime</a></th>
-                <th><a data-ng-click="sortBy('year')">year</a></th>
+                <th><a data-ng-click="sortBy(firstMovieSelection, 'runtime')">runtime</a></th>
+                <th><a data-ng-click="sortBy(firstMovieSelection, 'year')">year</a></th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="movie in movies.data()">
+            <tr ng-repeat="movie in firstMovieSelection.data()">
+                <td>{{ movie.movieid }}</td>
+                <td>
+                    <i class="xcontrolicon-play2" data-ng-click="movie.play()"></i>
+                    <a href="http://www.imdb.com/title/{{ movie.imdbnumber }}" target="_blank">IMDB</a>
+                </td>
+                <td><a data-ui-sref="movie_show({movieid: movie.movieid})">{{ movie.label }}</a></td>
+                <td>{{ movie.director.join(', ') }}</td>
+                <td>{{ movie.genre.join(', ') }}</td>
+                <td>{{ movie.runtime }}</td>
+                <td>{{ movie.year }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+<pre>
+kodiCore.onReady(function (kodiServer) {
+    kodiServer.VideoLibrary.GetMovies({
+        properties: kodiServer.getFields('Video.Fields.Movie'),
+        limits: {start: 3, end: 6}
+    }).then(
+        function (movies) {
+            console.log(movies);
+            $scope.movies = movies;
+        }
+    );
+});
+</pre>
+        </div>
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th><a data-ng-click="sortBy(secondMovieSelection, 'movieid')">#</a></th>
+                <th>actions</th>
+                <th><a data-ng-click="sortBy(secondMovieSelection, 'title')">title</a></th>
+                <th>productBy</th>
+                <th>genre</th>
+                <th><a data-ng-click="sortBy(secondMovieSelection, 'runtime')">runtime</a></th>
+                <th><a data-ng-click="sortBy(secondMovieSelection, 'year')">year</a></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="movie in secondMovieSelection.data()">
+                <td>{{ movie.movieid }}</td>
+                <td>
+                    <i class="xcontrolicon-play2" data-ng-click="movie.play()"></i>
+                    <a href="http://www.imdb.com/title/{{ movie.imdbnumber }}" target="_blank">IMDB</a>
+                </td>
+                <td><a data-ui-sref="movie_show({movieid: movie.movieid})">{{ movie.label }}</a></td>
+                <td>{{ movie.director.join(', ') }}</td>
+                <td>{{ movie.genre.join(', ') }}</td>
+                <td>{{ movie.runtime }}</td>
+                <td>{{ movie.year }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+<pre>
+kodiCore.onReady(function (kodiServer) {
+    $scope.movies = kodiCache.getMovie();
+});
+</pre>
+        </div>
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th><a data-ng-click="sortBy(movies, 'movieid')">#</a></th>
+                <th>actions</th>
+                <th><a data-ng-click="sortBy(movies, 'title')">title</a></th>
+                <th>productBy</th>
+                <th>genre</th>
+                <th><a data-ng-click="sortBy(movies, 'runtime')">runtime</a></th>
+                <th><a data-ng-click="sortBy(movies, 'year')">year</a></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="movie in movies.find()">
                 <td>{{ movie.movieid }}</td>
                 <td>
                     <i class="xcontrolicon-play2" data-ng-click="movie.play()"></i>

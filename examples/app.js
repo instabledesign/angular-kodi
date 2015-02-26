@@ -34,16 +34,31 @@ var app = angular.module('app', ['kodi', 'ngRoute'])
             );
         });
     })
-    .controller('MovieCtrl', function (kodiCore, $scope) {
+    .controller('MovieCtrl', function (kodiCore, kodiCache, $scope) {
         kodiCore.onReady(function (kodiServer) {
-            kodiServer.VideoLibrary.GetMovies({properties: kodiServer.getFields('Video.Fields.Movie')}).then(
-                function (movies) {
-                    $scope.movies = movies;
+            console.log(kodiServer.getServerSchema());
+            kodiServer.VideoLibrary.GetMovies({
+                properties: kodiServer.getFields('Video.Fields.Movie'),
+                limits: {end: 3}
+            }).then(
+                function (firstMovieSelection) {
+                    $scope.firstMovieSelection = firstMovieSelection;
                 }
             );
+
+            kodiServer.VideoLibrary.GetMovies({
+                properties: kodiServer.getFields('Video.Fields.Movie'),
+                limits: {start: 3, end: 6}
+            }).then(
+                function (secondMovieSelection) {
+                    $scope.secondMovieSelection = secondMovieSelection;
+                }
+            );
+
+            $scope.movies = kodiCache.getMovie();
         });
-        $scope.sortBy = function(field){
-            $scope.movies = $scope.movies.applySimpleSort(field);
+        $scope.sortBy = function(collection, field){
+            collection = collection.applySimpleSort(field);
         };
     });
 

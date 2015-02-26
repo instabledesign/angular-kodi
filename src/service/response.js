@@ -25,12 +25,14 @@ angular.module('kodi')
             _this.create = function (attributes) {
                 var response = new kodiResponse(attributes);
 
-                var objectService = _this.guess(response);
+                if (response.hasOwnProperty('result')) {
+                    var objectService = _this.guess(response);
 
-                response.data = objectService.hasOwnProperty('hydrateFromResponse') ?
-                    objectService.hydrateFromResponse(response) :
-                    false;
+                    response.data = objectService.hasOwnProperty('hydrateFromResponse') ?
+                        objectService.hydrateFromResponse(response) :
+                        false;
 
+                }
                 cache.insert(response);
 
                 return response;

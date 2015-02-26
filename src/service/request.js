@@ -83,7 +83,12 @@ angular.module('kodi')
                 var request = cache.get(response.id);
                 if (!request) throw 'No request was found for response id "' + response.id + '"';
 
-                request.success(response);
+                if (response.hasOwnProperty('data')) {
+                    request.success(response);
+                }
+                else {
+                    request.fail(response);
+                }
             };
 
             /**
@@ -229,8 +234,8 @@ angular.module('kodi')
                                     this.response.data
                             );
                         },
-                        onfail:                    function (event, from, to, data) {
-                            this.defer.reject(data);
+                        onfail:                    function (event, from, to, response) {
+                            this.defer.reject(response);
                         }
                     }
                 });
